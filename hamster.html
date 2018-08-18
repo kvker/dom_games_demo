@@ -84,6 +84,7 @@
 <body>
   <header>
     <span id="score">得分：0</span>
+    <button onclick="setLevel()">难度</button>
     <button onclick="restart()">重玩</button>
   </header>
   <main>
@@ -169,10 +170,7 @@
     }
 
     // 每只老鼠绑定击打事件
-    mouses.forEach(mouse => {
-      mouse.addEventListener('click', hit)
-      mouse.style.transition = `transform ${1 - gameConfig.level / 10}s linear`
-    })
+    mouses.forEach(mouse => mouse.addEventListener('click', hit))
 
     // 出来
     const show = mouse => {
@@ -195,17 +193,46 @@
     // 随机获取老鼠
     const getRandomMouse = () => mouses[~~(Math.random() * 9)]
 
+    // 重新开始游戏
     const restart = () => {
       // 还原所有，分、动画
       // 还原分
       score.innerText = '得分：0'
       // 所有的都缩回去
-      mouses.forEach(mouse => mouse.style.transform = 'translateY(0)')
+      hiddenAll()
       // 清除遗留的出现内部绑定的事情
       clearTimeout(timeout)
 
       // 开始
       setTimeout(() => show(getRandomMouse()), 1 * (1000 - gameConfig.level * 100))
+    }
+
+    const hiddenAll = () => mouses.forEach(mouse => {
+      mouse.style.transform = 'translateY(0)'
+      // 设置难度时候用到
+      mouse.style.transition = `transform ${1 - gameConfig.level / 10}s linear`
+      clearTimeout(timeout)
+    })
+    // 设置难度
+    const setLevel = () => {
+      const value = prompt('设置游戏难度，请输入1-9？')
+      switch(value) {
+        case null: console.log("点击了取消")
+        break
+        case "": console.log("输入了空内容")
+        break
+        default: {
+          if(Number(value)) {
+            gameConfig.level = Number(value)
+            hiddenAll()
+            setTimeout(restart, 1000)
+          }
+          else {
+            alert('请输入有效值')
+            setLevel()
+          }
+        }
+      }
     }
 
     restart()
