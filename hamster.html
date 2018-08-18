@@ -85,7 +85,7 @@
 <body>
   <header>
     <span id="score">得分：0</span>
-    <button>重玩</button>
+    <button onclick="restart()">重玩</button>
   </header>
   <main>
     <section class="mouse-ground">
@@ -189,8 +189,20 @@
     // 随机获取老鼠
     const getRandomMouse = () => mouses[~~(Math.random() * 9)]
 
-    // 开始
-    setTimeout(() => show(getRandomMouse()), 1000)
+    const restart = () => {
+      // 还原所有，分、动画
+      // 还原分
+      score.innerText = '得分：0'
+      // 所有的都缩回去
+      mouses.forEach(mouse => mouse.style.transform = 'translateY(0)')
+      // 清除遗留的出现内部绑定的事情
+      clearTimeout(timeout)
+
+      // 开始
+      setTimeout(() => show(getRandomMouse()), 1000)
+    }
+
+    restart()
   </script>
 </body>
 </html>
