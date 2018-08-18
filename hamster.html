@@ -41,10 +41,49 @@
     }
 
     .mouse-ground {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 84px;
       height: 84px;
       background: blue;
     }
+
+    .hole {
+      width: 60px;
+      height: 60px;
+      /* 椭圆代办 */
+      /* border-radius: 15px/30px 30px/15px; */
+      border-radius: 30px;
+      background: black;
+    }
+
+    .mouse {
+      position: absolute;
+      left: 22px;
+      top: 24px;
+      width: 40px;
+      height: 40px;
+      background: purple;
+      /* animation: test 2s linear; */
+      transition: transform 1s linear;
+    }
+
+    .grass {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      background: greenyellow;
+    }
+
+    /* @keyframes test {
+      0% {top: 44px}
+      50% {top: 4px}
+      100% {top: 44px}
+    } */
   </style>
 </head>
 <body>
@@ -53,15 +92,51 @@
     <button>重玩</button>
   </header>
   <main>
-    <section class="mouse-ground"></section>
-    <section class="mouse-ground"></section>
-    <section class="mouse-ground"></section>
-    <section class="mouse-ground"></section>
-    <section class="mouse-ground"></section>
-    <section class="mouse-ground"></section>
-    <section class="mouse-ground"></section>
-    <section class="mouse-ground"></section>
-    <section class="mouse-ground"></section>
+    <section class="mouse-ground">
+      <div class="hole"></div>
+      <div class="mouse"></div>
+      <div class="grass"></div>
+    </section>
+    <div class="mouse-ground">
+      <div class="hole"></div>
+      <div class="mouse"></div>
+      <div class="grass"></div>
+    </div>
+    <div class="mouse-ground">
+      <div class="hole"></div>
+      <div class="mouse"></div>
+      <div class="grass"></div>
+    </div>
+    <div class="mouse-ground">
+      <div class="hole"></div>
+      <div class="mouse"></div>
+      <div class="grass"></div>
+    </div>
+    <div class="mouse-ground">
+      <div class="hole"></div>
+      <div class="mouse"></div>
+      <div class="grass"></div>
+    </div>
+    <div class="mouse-ground">
+      <div class="hole"></div>
+      <div class="mouse"></div>
+      <div class="grass"></div>
+    </div>
+    <div class="mouse-ground">
+      <div class="hole"></div>
+      <div class="mouse"></div>
+      <div class="grass"></div>
+    </div>
+    <div class="mouse-ground">
+      <div class="hole"></div>
+      <div class="mouse"></div>
+      <div class="grass"></div>
+    </div>
+    <div class="mouse-ground">
+      <div class="hole"></div>
+      <div class="mouse"></div>
+      <div class="grass"></div>
+    </div>
   </main>
   <footer>一些说明</footer>
 </body>
