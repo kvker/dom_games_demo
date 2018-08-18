@@ -84,53 +84,53 @@
 </head>
 <body>
   <header>
-    <span>得分：0</span>
+    <span id="score">得分：0</span>
     <button>重玩</button>
   </header>
   <main>
     <section class="mouse-ground">
       <div class="hole"></div>
-      <div class="mouse"></div>
+      <button class="mouse"></button>
       <div class="grass"></div>
     </section>
     <div class="mouse-ground">
       <div class="hole"></div>
-      <div class="mouse"></div>
+      <button class="mouse"></button>
       <div class="grass"></div>
     </div>
     <div class="mouse-ground">
       <div class="hole"></div>
-      <div class="mouse"></div>
+      <button class="mouse"></button>
       <div class="grass"></div>
     </div>
     <div class="mouse-ground">
       <div class="hole"></div>
-      <div class="mouse"></div>
+      <button class="mouse"></button>
       <div class="grass"></div>
     </div>
     <div class="mouse-ground">
       <div class="hole"></div>
-      <div class="mouse"></div>
+      <button class="mouse"></button>
       <div class="grass"></div>
     </div>
     <div class="mouse-ground">
       <div class="hole"></div>
-      <div class="mouse"></div>
+      <button class="mouse"></button>
       <div class="grass"></div>
     </div>
     <div class="mouse-ground">
       <div class="hole"></div>
-      <div class="mouse"></div>
+      <button class="mouse"></button>
       <div class="grass"></div>
     </div>
     <div class="mouse-ground">
       <div class="hole"></div>
-      <div class="mouse"></div>
+      <button class="mouse"></button>
       <div class="grass"></div>
     </div>
     <div class="mouse-ground">
       <div class="hole"></div>
-      <div class="mouse"></div>
+      <button class="mouse"></button>
       <div class="grass"></div>
     </div>
   </main>
@@ -142,6 +142,8 @@
     * 一只出来，等一秒钟，没有点击就回去，回去后，另一只再出来。
     */
 
+    let totalScore = 0
+
     // 拿到所有的老鼠
     const mouses = document.querySelectorAll('.mouse')
 
@@ -150,7 +152,15 @@
 
     // 击打
     const hit = e => {
-      hidden(e.target)
+      // 加分
+      score.innerText = `得分：${++totalScore}`
+
+      const mouse = e.target
+      // 击打后，避免多次击打
+      mouse.disabled = true
+
+      // 隐藏老鼠
+      hidden(mouse)
       // 击打了，就取消出现内部2s自动隐藏事件
       clearTimeout(timeout)
     }
@@ -169,7 +179,11 @@
     const hidden = mouse => {
       mouse.style.transform = 'translateY(0)'
       // 隐藏后，还得出新的老鼠。
-      setTimeout(() => show(getRandomMouse()), 1000)
+      setTimeout(() => {
+        // 隐藏后，解开可能的disabled
+        mouse.disabled = false
+        show(getRandomMouse())
+      }, 1000)
     }
 
     // 随机获取老鼠
