@@ -8,4 +8,4 @@ HTML5 Games, by Normal DOM.
 
 > 喜欢的话，记得Star下。欢迎Fork，长期更新，想的起来的话，XD。
 
-* [Hamster 打地鼠](hamster.html)
+* [Hamster 打地鼠](http://www.zweizhao.com/H5GamesDOM/hamster.html)
