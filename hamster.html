@@ -69,6 +69,7 @@
       /* animation: test 2s linear; */
       transition: transform 1s linear;
       transform: translateY(0);
+      cursor: pointer;
     }
 
     .grass {
@@ -79,12 +80,6 @@
       height: 40px;
       background: greenyellow;
     }
-
-    /* @keyframes test {
-      0% {top: 44px}
-      50% {top: 4px}
-      100% {top: 44px}
-    } */
   </style>
 </head>
 <body>
@@ -150,29 +145,38 @@
     // 拿到所有的老鼠
     const mouses = document.querySelectorAll('.mouse')
 
+    // 绑定出现时候的2s自动隐藏事件，避免击打造成提前隐藏后，出现内部那个2s隐藏再次触发。
+    let timeout
+
     // 击打
-    const hit = e => e.target.style.transform = 'translateY(0)'
+    const hit = e => {
+      hidden(e.target)
+      // 击打了，就取消出现内部2s自动隐藏事件
+      clearTimeout(timeout)
+    }
+
+    // 每只老鼠绑定击打事件
+    mouses.forEach(mouse => mouse.addEventListener('click', hit))
 
     // 出来
     const show = mouse => {
       mouse.style.transform = 'translateY(-40px)'
-      // 出来一秒后自动缩回去
-      setTimeout(() => hidden(mouse), 2000)
+      // 出来一秒后自动缩回去，出现花1s，等待1s，所以要2s
+      timeout = setTimeout(() => hidden(mouse), 2000)
     }
 
     // 隐藏
     const hidden = mouse => {
       mouse.style.transform = 'translateY(0)'
+      // 隐藏后，还得出新的老鼠。
       setTimeout(() => show(getRandomMouse()), 1000)
     }
 
+    // 随机获取老鼠
     const getRandomMouse = () => mouses[~~(Math.random() * 9)]
 
-    mouses.forEach(mouse => mouse.addEventListener('click', hit))
-
-    setTimeout(() => {
-      show(getRandomMouse())
-    }, 1000)
+    // 开始
+    setTimeout(() => show(getRandomMouse()), 1000)
   </script>
 </body>
 </html>
