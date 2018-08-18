@@ -62,12 +62,13 @@
     .mouse {
       position: absolute;
       left: 22px;
-      top: 24px;
+      top: 44px;
       width: 40px;
       height: 40px;
       background: purple;
       /* animation: test 2s linear; */
       transition: transform 1s linear;
+      transform: translateY(0);
     }
 
     .grass {
@@ -139,5 +140,39 @@
     </div>
   </main>
   <footer>一些说明</footer>
+
+  <script>
+    /**
+    * 一共9只老鼠，得弄个随机数来提供让老鼠出来，现在老鼠都是缩在洞里。
+    * 一只出来，等一秒钟，没有点击就回去，回去后，另一只再出来。
+    */
+
+    // 拿到所有的老鼠
+    const mouses = document.querySelectorAll('.mouse')
+
+    // 击打
+    const hit = e => e.target.style.transform = 'translateY(0)'
+
+    // 出来
+    const show = mouse => {
+      mouse.style.transform = 'translateY(-40px)'
+      // 出来一秒后自动缩回去
+      setTimeout(() => hidden(mouse), 2000)
+    }
+
+    // 隐藏
+    const hidden = mouse => {
+      mouse.style.transform = 'translateY(0)'
+      setTimeout(() => show(getRandomMouse()), 1000)
+    }
+
+    const getRandomMouse = () => mouses[~~(Math.random() * 9)]
+
+    mouses.forEach(mouse => mouse.addEventListener('click', hit))
+
+    setTimeout(() => {
+      show(getRandomMouse())
+    }, 1000)
+  </script>
 </body>
 </html>
