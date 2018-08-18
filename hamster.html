@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hamster</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    body {
+      width: 320px;
+    }
+    header, main, footer {
+      display: flex;
+      width: 100%;
+      height: 60px;
+    }
+    header {
+      justify-content: space-between;
+      align-items: center;
+      background: yellow;
+    }
+    main {
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+      height: 320px;
+      background: green;
+    }
+    footer {
+      justify-content: center;
+      align-items: center;
+      background: red;
+    }
+
+    .mouse-ground {
+      width: 84px;
+      height: 84px;
+      background: blue;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span>得分：0</span>
+    <button>重玩</button>
+  </header>
+  <main>
+    <section class="mouse-ground"></section>
+    <section class="mouse-ground"></section>
+    <section class="mouse-ground"></section>
+    <section class="mouse-ground"></section>
+    <section class="mouse-ground"></section>
+    <section class="mouse-ground"></section>
+    <section class="mouse-ground"></section>
+    <section class="mouse-ground"></section>
+    <section class="mouse-ground"></section>
+  </main>
+  <footer>一些说明</footer>
+</body>
+</html>
