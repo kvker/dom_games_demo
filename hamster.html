@@ -215,11 +215,17 @@
     })
     // 设置难度
     const setLevel = () => {
-      const value = prompt('设置游戏难度，请输入1-9？')
+      const value = prompt('设置游戏难度，请输入1-9。别手贱，会鬼畜。。。')
+
+      const warning = () => {
+        alert('请输入有效值')
+        setLevel()
+      }
+
       switch(value) {
         case null: console.log("点击了取消")
         break
-        case "": console.log("输入了空内容")
+        case "": warning()
         break
         default: {
           if(Number(value)) {
@@ -227,10 +233,7 @@
             hiddenAll()
             setTimeout(restart, 1000)
           }
-          else {
-            alert('请输入有效值')
-            setLevel()
-          }
+          else warning()
         }
       }
     }
