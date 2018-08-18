@@ -66,7 +66,6 @@
       width: 40px;
       height: 40px;
       background: purple;
-      /* animation: test 2s linear; */
       transition: transform 1s linear;
       transform: translateY(0);
       cursor: pointer;
@@ -142,6 +141,10 @@
     * 一只出来，等一秒钟，没有点击就回去，回去后，另一只再出来。
     */
 
+    const gameConfig = {
+      level: 5, // 1-9等级
+    }
+
     let totalScore = 0
 
     // 拿到所有的老鼠
@@ -166,13 +169,16 @@
     }
 
     // 每只老鼠绑定击打事件
-    mouses.forEach(mouse => mouse.addEventListener('click', hit))
+    mouses.forEach(mouse => {
+      mouse.addEventListener('click', hit)
+      mouse.style.transition = `transform ${1 - gameConfig.level / 10}s linear`
+    })
 
     // 出来
     const show = mouse => {
       mouse.style.transform = 'translateY(-40px)'
       // 出来一秒后自动缩回去，出现花1s，等待1s，所以要2s
-      timeout = setTimeout(() => hidden(mouse), 2000)
+      timeout = setTimeout(() => hidden(mouse), 2 * (1000 - gameConfig.level * 100))
     }
 
     // 隐藏
@@ -183,7 +189,7 @@
         // 隐藏后，解开可能的disabled
         mouse.disabled = false
         show(getRandomMouse())
-      }, 1000)
+      }, 1 * (1000 - gameConfig.level * 100))
     }
 
     // 随机获取老鼠
@@ -199,7 +205,7 @@
       clearTimeout(timeout)
 
       // 开始
-      setTimeout(() => show(getRandomMouse()), 1000)
+      setTimeout(() => show(getRandomMouse()), 1 * (1000 - gameConfig.level * 100))
     }
 
     restart()
