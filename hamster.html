@@ -144,6 +144,7 @@
 
     const gameConfig = {
       level: 5, // 1-9等级
+      hasAutoHidden: false, // 是否已经自动隐藏，用于判断是否与点击成功隐藏老鼠冲突
     }
 
     let totalScore = 0
@@ -164,9 +165,11 @@
       mouse.disabled = true
 
       // 隐藏老鼠
-      hidden(mouse)
+      if(!gameConfig.hasAutoHidden) hidden(mouse)
       // 击打了，就取消出现内部2s自动隐藏事件
       clearTimeout(timeout)
+      // 重置时候自动隐藏
+      gameConfig.hasAutoHidden = false
     }
 
     // 每只老鼠绑定击打事件
@@ -176,7 +179,10 @@
     const show = mouse => {
       mouse.style.transform = 'translateY(-40px)'
       // 出来一秒后自动缩回去，出现花1s，等待1s，所以要2s
-      timeout = setTimeout(() => hidden(mouse), 2 * (1000 - gameConfig.level * 100))
+      timeout = setTimeout(() => {
+        gameConfig.hasAutoHidden = true
+        hidden(mouse)
+      }, 2 * (1000 - gameConfig.level * 100))
     }
 
     // 隐藏
