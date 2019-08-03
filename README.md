@@ -8,6 +8,6 @@ HTML5 Games, by Normal DOM.
 
 > 喜欢的话，记得Star下。欢迎Fork，长期更新，想的起来的话，XD。
 
-* [Hamster 打地鼠](http://www.zweizhao.com/H5GamesDOM/hamster/)
+* [Hamster 打地鼠](https://kvker.github.io/H5GamesDOM/hamster/index.html)
 
-* [Puzzle 拼图](http://www.zweizhao.com/H5GamesDOM/puzzle/)
+* [Puzzle 拼图](https://kvker.github.io/H5GamesDOM/puzzle/index.html)
