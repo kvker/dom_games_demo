@@ -144,12 +144,13 @@
        * 一只出来，等一秒钟，没有点击就回去，回去后，另一只再出来。
        */
 
-      const gameConfig = {
+      const game_config = {
         level: 5, // 1-9等级
-        hasAutoHidden: false, // 是否已经自动隐藏，用于判断是否与点击成功隐藏老鼠冲突
+        has_auto_hidden: false, // 是否已经自动隐藏，用于判断是否与点击成功隐藏老鼠冲突
       }
 
-      let totalScore = 0
+      // 总得分
+      let total_score = 0
 
       // 拿到所有的老鼠
       const mouses = document.querySelectorAll('.mouse')
@@ -160,18 +161,18 @@
       // 击打
       const hit = (e) => {
         // 加分
-        score.innerText = `得分：${++totalScore}`
+        score.innerText = `得分：${++total_score}`
 
         const mouse = e.target
         // 击打后，避免多次击打
         mouse.disabled = true
 
         // 隐藏老鼠
-        if (!gameConfig.hasAutoHidden) hidden(mouse)
+        if (!game_config.has_auto_hidden) hidden(mouse)
         // 击打了，就取消出现内部2s自动隐藏事件
         clearTimeout(timeout)
         // 重置时候自动隐藏
-        gameConfig.hasAutoHidden = false
+        game_config.has_auto_hidden = false
       }
 
       // 每只老鼠绑定击打事件
@@ -182,9 +183,9 @@
         mouse.style.transform = 'translateY(-40px)'
         // 出来一秒后自动缩回去，出现花1s，等待1s，所以要2s
         timeout = setTimeout(() => {
-          gameConfig.hasAutoHidden = true
+          game_config.has_auto_hidden = true
           hidden(mouse)
-        }, 2 * (1000 - gameConfig.level * 100))
+        }, 2 * (1000 - game_config.level * 100))
       }
 
       // 隐藏
@@ -195,7 +196,7 @@
           // 隐藏后，解开可能的disabled
           mouse.disabled = false
           show(getRandomMouse())
-        }, 1 * (1000 - gameConfig.level * 100))
+        }, 1 * (1000 - game_config.level * 100))
       }
 
       // 随机获取老鼠
@@ -205,22 +206,22 @@
       const restart = () => {
         // 还原所有，分、动画
         // 还原分
-        totalScore = 0
-        score.innerText = '得分：' + totalScore
+        total_score = 0
+        score.innerText = '得分：' + total_score
         // 所有的都缩回去
         hiddenAll()
         // 清除遗留的出现内部绑定的事情
         clearTimeout(timeout)
 
         // 开始
-        setTimeout(() => show(getRandomMouse()), 1 * (1000 - gameConfig.level * 100))
+        setTimeout(() => show(getRandomMouse()), 1 * (1000 - game_config.level * 100))
       }
 
       const hiddenAll = () =>
         mouses.forEach((mouse) => {
           mouse.style.transform = 'translateY(0)'
           // 设置难度时候用到
-          mouse.style.transition = `transform ${1 - gameConfig.level / 10}s linear`
+          mouse.style.transition = `transform ${1 - game_config.level / 10}s linear`
           clearTimeout(timeout)
         })
       // 设置难度
@@ -241,7 +242,7 @@
             break
           default: {
             if (Number(value)) {
-              gameConfig.level = Number(value)
+              game_config.level = Number(value)
               hiddenAll()
               setTimeout(restart, 1000)
             } else warning()
