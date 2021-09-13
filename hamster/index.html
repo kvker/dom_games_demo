@@ -72,9 +72,16 @@
         width: 40px;
         height: 40px;
         background: purple;
-        transition: transform 1s linear;
         transform: translateY(0);
         cursor: pointer;
+      }
+
+      .show {
+        transform: translateY(-40px);
+      }
+
+      .false {
+        transform: translateY(0);
       }
 
       .grass {
@@ -161,7 +168,7 @@
       const mouses = document.querySelectorAll('.mouse')
 
       // 绑定出现时候的2s自动隐藏事件，避免击打造成提前隐藏后，出现内部那个2s隐藏再次触发。
-      let timeout
+      let timeout_show, timeout_hidden
 
       // 击打
       const hit = (e) => {
@@ -173,9 +180,9 @@
         mouse.disabled = true
 
         // 隐藏老鼠
-        if (!game_config.has_auto_hidden) hidden(mouse)
+        hidden(mouse)
         // 击打了，就取消出现内部2s自动隐藏事件
-        clearTimeout(timeout)
+        clearTimeout(timeout_show)
         // 重置时候自动隐藏
         game_config.has_auto_hidden = false
       }
@@ -183,25 +190,33 @@
       // 每只老鼠绑定击打事件
       mouses.forEach((mouse) => mouse.addEventListener('click', hit))
 
+      // 半场动画时长
+      const halfAnimationDuration = () => 1000 - game_config.level * 100
+
       // 出来
       const show = (mouse) => {
-        mouse.style.transform = 'translateY(-40px)'
+        mouse.classList.add('show')
+        mouse.classList.remove('hidden')
         // 出来一秒后自动缩回去，出现花1s，等待1s，所以要2s
-        timeout = setTimeout(() => {
+        timeout_show = setTimeout(() => {
           game_config.has_auto_hidden = true
           hidden(mouse)
-        }, 2 * (1000 - game_config.level * 100))
+        }, 2 * halfAnimationDuration())
       }
 
       // 隐藏
       const hidden = (mouse) => {
-        mouse.style.transform = 'translateY(0)'
+        // 隐藏中就直接跳出
+        if (timeout_hidden) return
+        mouse.classList.remove('show')
+        mouse.classList.add('hidden')
         // 隐藏后，还得出新的老鼠。
-        setTimeout(() => {
+        timeout_hidden = setTimeout(() => {
           // 隐藏后，解开可能的disabled
+          timeout_hidden = false
           mouse.disabled = false
           show(getRandomMouse())
-        }, 1 * (1000 - game_config.level * 100))
+        }, 1 * halfAnimationDuration())
       }
 
       // 随机获取老鼠
@@ -217,17 +232,19 @@
         hiddenAll()
 
         // 开始
-        setTimeout(() => show(getRandomMouse()), 1 * (1000 - game_config.level * 100))
+        setTimeout(() => show(getRandomMouse()), 1 * halfAnimationDuration())
       }
 
       const hiddenAll = () => {
         mouses.forEach((mouse) => {
-          mouse.style.transform = 'translateY(0)'
-          // 设置难度时候用到
-          mouse.style.transition = `transform ${1 - game_config.level / 10}s linear`
+          mouse.classList.remove('show')
+          mouse.classList.add('hidden')
         })
+        let ss = document.styleSheets[0]
+        ss.insertRule(`.mouse {transition: transform ${1 - game_config.level / 10}s linear;}`, ss.cssRules.length)
         // 清除遗留的出现内部绑定的事情
-        clearTimeout(timeout)
+        clearTimeout(timeout_show)
+        clearTimeout(timeout_hidden)
       }
 
       // 设置难度
