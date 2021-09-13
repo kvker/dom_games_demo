@@ -205,7 +205,8 @@
       const restart = () => {
         // 还原所有，分、动画
         // 还原分
-        score.innerText = '得分：0'
+        totalScore = 0
+        score.innerText = '得分：' + totalScore
         // 所有的都缩回去
         hiddenAll()
         // 清除遗留的出现内部绑定的事情
