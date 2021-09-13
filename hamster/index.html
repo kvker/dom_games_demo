@@ -210,20 +210,21 @@
         score.innerText = '得分：' + total_score
         // 所有的都缩回去
         hiddenAll()
-        // 清除遗留的出现内部绑定的事情
-        clearTimeout(timeout)
 
         // 开始
         setTimeout(() => show(getRandomMouse()), 1 * (1000 - game_config.level * 100))
       }
 
-      const hiddenAll = () =>
+      const hiddenAll = () => {
         mouses.forEach((mouse) => {
           mouse.style.transform = 'translateY(0)'
           // 设置难度时候用到
           mouse.style.transition = `transform ${1 - game_config.level / 10}s linear`
-          clearTimeout(timeout)
         })
+        // 清除遗留的出现内部绑定的事情
+        clearTimeout(timeout)
+      }
+
       // 设置难度
       const setLevel = () => {
         const value = prompt('设置游戏难度，请输入1-9。别手贱，会鬼畜。。。')
