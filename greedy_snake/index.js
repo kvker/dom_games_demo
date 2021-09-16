@@ -64,7 +64,7 @@ class Game {
   // TODO: 游戏等级
   level = 1
   // 场景方块数目
-  size = 40
+  size = 20
 
   // 食物位置，仅仅记录 x, y 值
   food
@@ -107,7 +107,7 @@ class Game {
         this.restart()
       }
       this.render()
-    }, 1000)
+    }, 500)
 
     // 初始化监听键盘
     this.listenKeyboard()
