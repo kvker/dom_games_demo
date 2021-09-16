@@ -5,11 +5,8 @@ class Snake {
     this.body = body
   }
 
-  eat(point) {
-    for (let i = this.body.length; i > 0; i--) {
-      if (i) this.body[i] = this.body[i - 1]
-      else this.body[i] = point
-    }
+  eat() {
+    this.body.push(this.body.at(-1))
   }
 
   move() {
@@ -39,7 +36,7 @@ class Snake {
       point.x += x
       point.y += y
     })
-    console.log(this.body[0])
+    // console.log(this.body[0])
     game.render()
   }
 }
@@ -50,12 +47,15 @@ class Game {
   level = 1
   size = 40
 
+  food
+
   constructor() {
     this.snake = new Snake([{ x: 0, y: 0 }])
     this.container = document.querySelector('#container')
     let gap = this.size - 1
     this.container.style.cssText = `width: ${this.width - gap}px; height: ${this.height - gap}px;)`
     const fragment = document.createDocumentFragment()
+    // 绘制棋盘
     for (let i = 0; i < this.size; i++) {
       for (let j = 0; j < this.size; j++) {
         const cell = document.createElement('div')
@@ -71,6 +71,14 @@ class Game {
 
     setInterval(() => {
       this.snake.move()
+      if (this.checkEat()) {
+        this.snake.eat()
+        this.generateFood()
+      }
+      if (this.checkFail()) {
+        alert('You lose!')
+        this.restart()
+      }
     }, 1000)
   }
 
@@ -81,13 +89,35 @@ class Game {
   restart() {
     this.snake = new Snake([{ x: 0, y: 0 }])
     this.render()
+    this.generateFood()
   }
 
-  check() {
-    let fail_cell = this.snake.body.find(({ x, y }) => x < 0 || y < 0 || x > this.size - 1 || y > this.size - 1)
-    if (fail_cell) {
-      alert('You lose!')
-      this.restart()
+  checkFail() {
+    return this.snake.body.find(({ x, y }) => x < 0 || y < 0 || x > this.size - 1 || y > this.size - 1)
+  }
+
+  checkEat() {
+    let snake_head = this.snake.body[0]
+    return snake_head.x === this.food.x && snake_head.y === this.food.y
+  }
+
+  generateFood() {
+    let x = ~~(Math.random() * this.size)
+    let y = ~~(Math.random() * this.size)
+    // console.log(x, y)
+    let is_exist = this.snake.body.find((point) => point.x === x && point.y === y)
+    if (is_exist) {
+      this.generateFood()
+    } else {
+      for (const cell of this.container.children) {
+        let dataset = cell.dataset
+        if (x === +dataset.x && y === +dataset.y) {
+          cell.classList.add('food')
+          this.food = { x, y }
+        } else {
+          cell.classList.remove('food')
+        }
+      }
     }
   }
 
@@ -95,11 +125,10 @@ class Game {
     for (const point of this.snake.body) {
       for (const cell of this.container.children) {
         let { x, y } = cell.dataset
-        if (x == point.x && y == point.y) cell.classList.add('snake')
+        if (+x === point.x && +y === point.y) cell.classList.add('snake')
         else cell.classList.remove('snake')
       }
     }
-    this.check()
   }
 }
 
