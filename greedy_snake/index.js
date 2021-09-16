@@ -1,30 +1,36 @@
 class Snake {
-  direction = 1
+  direction = 'ArrowRight'
+
+  body
+  tail
 
   constructor(body) {
     this.body = body
+    this.tail = body.at(-1)
   }
 
   eat() {
-    this.body.push(this.body.at(-1))
+    console.log(this.body)
+    this.body.push(this.tail)
+    console.log(this.body)
   }
 
   move() {
     let x, y
     switch (this.direction) {
-      case 0:
+      case 'ArrowUp':
         x = 0
         y = -1
         break
-      case 1:
+      case 'ArrowRight':
         x = 1
         y = 0
         break
-      case 2:
+      case 'ArrowDown':
         x = 0
         y = 1
         break
-      case 3:
+      case 'ArrowLeft':
         x = -1
         y = 0
         break
@@ -32,12 +38,20 @@ class Snake {
       default:
         break
     }
-    this.body.forEach(function (point) {
-      point.x += x
-      point.y += y
-    })
-    // console.log(this.body[0])
-    game.render()
+    let tail = this.body.at(-1)
+    this.tail = { x: tail.x, y: tail.y }
+
+    let head = this.body[0]
+    for (let i = this.body.length - 1; i >= 0; i--) {
+      if(i) {
+        this.body[i] = this.body[i - 1]
+      } else {
+        this.body[i] = {
+          x: head.x + x,
+          y: head.y + y,
+        }
+      }
+    }
   }
 }
 
@@ -79,7 +93,16 @@ class Game {
         alert('You lose!')
         this.restart()
       }
+      this.render()
     }, 1000)
+
+    this.listenKeyboard()
+  }
+
+  listenKeyboard() {
+    document.addEventListener('keydown', (e) => {
+      this.snake.direction = e.key
+    })
   }
 
   start() {
@@ -102,8 +125,8 @@ class Game {
   }
 
   generateFood() {
-    let x = ~~(Math.random() * this.size)
-    let y = ~~(Math.random() * this.size)
+    let x = ~~(Math.random() * 5)
+    let y = ~~(Math.random() * 5)
     // console.log(x, y)
     let is_exist = this.snake.body.find((point) => point.x === x && point.y === y)
     if (is_exist) {
@@ -122,11 +145,11 @@ class Game {
   }
 
   render() {
-    for (const point of this.snake.body) {
-      for (const cell of this.container.children) {
+    for (const cell of this.container.children) {
+      cell.classList.remove('snake')
+      for (const point of this.snake.body) {
         let { x, y } = cell.dataset
         if (+x === point.x && +y === point.y) cell.classList.add('snake')
-        else cell.classList.remove('snake')
       }
     }
   }
