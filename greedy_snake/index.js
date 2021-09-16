@@ -43,7 +43,7 @@ class Snake {
 
     let head = this.body[0]
     for (let i = this.body.length - 1; i >= 0; i--) {
-      if(i) {
+      if (i) {
         this.body[i] = this.body[i - 1]
       } else {
         this.body[i] = {
@@ -116,7 +116,9 @@ class Game {
   }
 
   checkFail() {
-    return this.snake.body.find(({ x, y }) => x < 0 || y < 0 || x > this.size - 1 || y > this.size - 1)
+    let { x, y } = this.snake.body[0]
+    let body = this.snake.body
+    return this.snake.body.find(({ x, y }) => x < 0 || y < 0 || x > this.size - 1 || y > this.size - 1) || body.find((item, index) => index && item.x === x && item.y === y)
   }
 
   checkEat() {
